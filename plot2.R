@@ -14,7 +14,7 @@ read_file <- function(
                           na.strings="?",
                           comment.char="") # speeds it up
   return(huge_data[((as.character(huge_data$Date) == "1/2/2007") | 
-                      (as.character(huge_data$Date) == "2/2/2007")),])
+                    (as.character(huge_data$Date) == "2/2/2007")),])
 }
 
 read_and_convert_times <- function(
@@ -30,17 +30,26 @@ read_and_convert_times <- function(
   return(subset)
 }
 
-plot_1_data <- function() {
+plot_2_data <- function() {
   print("Loading Chron Package (*you may need to install it!)*")
   library(chron)
   print("Reading data and adding chron time field")
   data <- read_and_convert_times()
   print("making plot")
-  png(file='plot1.png')
-  hist(data$Global_active_power, col='red',
-       xlab='Global Active Power (kilowatts)',
-       main='Global Active Power')
+  png(file='plot2.png')
+  days <- as.Date(as.character(as.vector(data$Date)), '%d/%m/%Y')
+  #days
+  days_ticks <- c(as.Date("1/2/2007", format='%d/%m/%Y'), 
+                  as.Date("2/2/2007", format='%d/%m/%Y'), 
+                  as.Date("3/2/2007", format='%d/%m/%Y'))
+  days_labels <- c("Thu", "Fri", "Sat")
+  plot(x=data$dateTime, y=data$Global_active_power,
+       ylab='Global Active Power (kilowatts)',
+       xlab='',
+       main='', type='l',
+       col='black', xaxt="n")
+  axis(side=1, at=days_ticks, labels=days_labels)
   dev.off()
 }
 
-#plot_1_data()
+#plot_2_data()

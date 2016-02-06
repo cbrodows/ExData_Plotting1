@@ -30,17 +30,42 @@ read_and_convert_times <- function(
   return(subset)
 }
 
-plot_1_data <- function() {
+plot_3_data <- function() {
   print("Loading Chron Package (*you may need to install it!)*")
   library(chron)
   print("Reading data and adding chron time field")
   data <- read_and_convert_times()
+  #view(data)
   print("making plot")
-  png(file='plot1.png')
-  hist(data$Global_active_power, col='red',
-       xlab='Global Active Power (kilowatts)',
-       main='Global Active Power')
+  png(file='plot3.png')
+  
+  days <- as.Date(as.character(as.vector(data$Date)), '%d/%m/%Y')
+  #days
+  days_ticks <- c(as.Date("1/2/2007", format='%d/%m/%Y'), 
+                  as.Date("2/2/2007", format='%d/%m/%Y'), 
+                  as.Date("3/2/2007", format='%d/%m/%Y'))
+  days_labels <- c("Thu", "Fri", "Sat")
+  plot(x=data$dateTime, y=data$Sub_metering_1,
+       ylab='Energy sub metering',
+       xlab='',
+       main='', type='l',
+       col='black', xaxt="n")
+  lines(x=data$dateTime, y=data$Sub_metering_2,
+       ylab='Energy sub metering',
+       xlab='',
+       main='', type='l',
+       col='red', xaxt="n")
+  lines(x=data$dateTime, y=data$Sub_metering_3,
+       ylab='Energy sub metering',
+       xlab='',
+       main='', type='l',
+       col='blue', xaxt="n")
+  
+  legend("topright", 
+         c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"),
+         col=c("black", "red", "blue"), lty=1)
+  axis(side=1, at=days_ticks, labels=days_labels)
   dev.off()
 }
 
-#plot_1_data()
+#plot_3_data()
